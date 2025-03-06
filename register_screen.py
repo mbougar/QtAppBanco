@@ -95,7 +95,8 @@ class RegisterScreen(QWidget):
             message.exec()
             return
 
-        self.main_window.users[username] = password ## Aqui metes al usuario en la base de datos
+        ## Aqui metes al usuario en la base de datos
+        self.main_window.users[username] = password 
 
         message = MessageDialog("Éxito", "Usuario registrado con éxito", self)
         message.exec()

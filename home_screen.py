@@ -36,9 +36,14 @@ class HomeScreen(QWidget):
         self.accountsFrame.setObjectName("accountsFrame")
 
         accounts_layout = QHBoxLayout(self.accountsFrame)
+
+        ## obtener las ultimas cuentas del usuario
+
         accounts = [
             {"balance": "10,500€", "type": "Ahorros", "number": "1234 5678 9012 3456"},
             {"balance": "3,200€", "type": "Corriente", "number": "9876 5432 1098 7654"},
+            {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
+            {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
             {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
         ]
 
@@ -77,6 +82,9 @@ class HomeScreen(QWidget):
         self.transactionTableView.setWordWrap(False)
         self.transactionTableView.setRowCount(4)
         self.transactionTableView.setColumnCount(3)
+
+        # get ultimas 4 suscripciones from database
+
         transactions = [
             ["12/3/2025", "1234.00€", "Compra Online"],
             ["12/3/2025", "11234.00€", "Compra Online"],
@@ -103,6 +111,10 @@ class HomeScreen(QWidget):
         self.subscriptionTableView.setWordWrap(False)
         self.subscriptionTableView.setRowCount(4)
         self.subscriptionTableView.setColumnCount(2)
+
+        # get ultimas 4 transactions from database
+
+
         transactions = [
             ["Netflix", "12.00€"],
             ["Amazon Prime", "11.99€"],

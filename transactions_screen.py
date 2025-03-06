@@ -57,6 +57,9 @@ class TransactionsScreen(QWidget):
         self.transactionTableView.setWordWrap(False)
         self.transactionTableView.setRowCount(4)
         self.transactionTableView.setColumnCount(3)
+
+        # get transactions from database
+
         transactions = [
             ["12/2/2025", "1234.00€", "Compra Online"],
             ["12/2/2025", "11234.00€", "Compra Online"],

@@ -58,6 +58,10 @@ class LoginScreen(QWidget):
         username = self.user_input.text()
         password = self.password_input.text()
 
+
+        ## Controlar que el usuario y la contraseña sean correctos con auth.sign_in_with_email_and_password
+        ## Pillar la informacion desde local si es que inicia sesion
+
         if username in self.main_window.users and self.main_window.users[username] == password:
             self.main_window.open_banking_app(username)
         else:

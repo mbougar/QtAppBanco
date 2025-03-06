@@ -53,6 +53,9 @@ class SubscriptionsScreen(QWidget):
         self.subscriptionTableView.setWordWrap(False)
         self.subscriptionTableView.setRowCount(4)
         self.subscriptionTableView.setColumnCount(2)
+
+        # get subscriptions from database
+
         transactions = [
             ["Netflix", "12.00€"],
             ["Amazon Prime", "11.99€"],
@@ -110,6 +113,9 @@ class SubscriptionsScreen(QWidget):
 
 
     def filter_subscriptions(self):
+
+        # get suscr con el filtro 
+
         filter = self.filter_line.text()
 
         for row in range(self.subscriptionTableView.rowCount()):

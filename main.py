@@ -7,6 +7,7 @@ from qfluentwidgets import MSFluentWindow, NavigationItemPosition, TitleLabel, P
 import app as banking_app
 import login_screen
 import register_screen
+import pyrebase
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -14,6 +15,7 @@ class MainWindow(QWidget):
         self.setWindowTitle("Banco CostaSur")
         self.setFixedSize(1000, 600)
         self.setContentsMargins
+
 
         self.users = {"admin": "1234"}  # Sacamos de la base de datos
 
