@@ -9,6 +9,7 @@ import loans_screen
 import transactions_screen
 import subscriptions_screen
 import settings_screen
+import utils
 
 class App(MSFluentWindow):
     def __init__(self, username):
@@ -20,17 +21,17 @@ class App(MSFluentWindow):
         self.subscriptions_screen = subscriptions_screen.SubscriptionsScreen()
         self.settings_screen = settings_screen.SettingsScreen()
 
-        self.addSubInterface(self.home_screen, QIcon("assets/icons/home.svg"), "Home")
-        self.addSubInterface(self.loans_screen, QIcon("assets/icons/accounts.svg"), "Préstamos")
-        self.addSubInterface(self.transactions_screen, QIcon("assets/icons/transaction.svg"), "Pagos")
-        self.addSubInterface(self.subscriptions_screen, QIcon("assets/icons/subscription.svg"), "Subs")
-        self.addSubInterface(self.settings_screen, QIcon("assets/icons/settings.svg"), "Ajustes", position=NavigationItemPosition.BOTTOM)
+        self.addSubInterface(self.home_screen, QIcon(utils.resource_path("assets/icons/home.svg")), "Home")
+        self.addSubInterface(self.loans_screen, QIcon(utils.resource_path("assets/icons/accounts.svg")), "Préstamos")
+        self.addSubInterface(self.transactions_screen, QIcon(utils.resource_path("assets/icons/transaction.svg")), "Pagos")
+        self.addSubInterface(self.subscriptions_screen, QIcon(utils.resource_path("assets/icons/subscription.svg")), "Subs")
+        self.addSubInterface(self.settings_screen, QIcon(utils.resource_path("assets/icons/settings.svg")), "Ajustes", position=NavigationItemPosition.BOTTOM)
         
 
         self.navigationInterface.setCurrentItem(self.home_screen.objectName())
         self.resize(900, 700)
         self.setWindowTitle(f"Banco CostaSur - {username}")
-        self.setWindowIcon(QIcon("assets/iconoBanco.svg"))
+        self.setWindowIcon(QIcon(utils.resource_path("assets/iconoBanco.svg")))
 
         for screen in [self.home_screen, self.loans_screen, self.transactions_screen, self.subscriptions_screen, self.settings_screen]:
             screen.setMinimumWidth(600)

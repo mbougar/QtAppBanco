@@ -1,4 +1,5 @@
-import sys
+import sys, ctypes
+from PyQt6 import QtGui
 from PyQt6.QtCore import Qt, QEvent
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QStackedWidget
@@ -8,6 +9,7 @@ import app as banking_app
 import login_screen
 import register_screen
 import pyrebase
+import utils
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -39,6 +41,10 @@ class MainWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    myappid = 'mbougar.myapp.calculator'
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+    app.setWindowIcon(QtGui.QIcon(utils.resource_path("iconoBanco.ico")))
+
     main_window = MainWindow()
     main_window.show()
-    app.exec()
+    sys.exit(app.exec())

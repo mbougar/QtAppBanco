@@ -4,7 +4,7 @@ from PyQt6.QtGui import QIcon, QColor
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QPushButton, QHBoxLayout, QLineEdit, QDateEdit, QFrame
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, FluentIcon as FIF, setTheme, Theme
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QDateEdit, QHeaderView
-from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongBodyLabel, TitleLabel, PixmapLabel, PushButton, PrimaryPushButton
+from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongBodyLabel, TitleLabel, PixmapLabel, PushButton, PrimaryPushButton, MessageBox
 
 import add_loan
 import pay_loan
@@ -162,7 +162,13 @@ class LoansScreen(QWidget):
     def pay_loan(self):
         selected_items = self.loanTableView.selectedItems()
         if not selected_items:
-            print("No loan selected.")
+            message = MessageBox(
+                "Alerta",
+                "No hay ningún prestamo seleccionado.",
+                self
+            )
+            message.yesButton.setText("Aceptar")
+            message.cancelButton.setText("Cancelar")
             return
 
         try:
@@ -183,5 +189,4 @@ class LoansScreen(QWidget):
 
         except Exception as e:
             print(e)
-        
-        print(f"Selected Loan: {loan_data}")
+

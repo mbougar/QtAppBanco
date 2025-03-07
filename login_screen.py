@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdi
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, TitleLabel, PrimaryPushButton, HyperlinkButton, LineEdit, ImageLabel, MessageBox, MessageDialog
 from auth import PyrebaseAuth
 
+import utils
+
 class LoginScreen(QWidget):
     def __init__(self, main_window):
         super().__init__()
@@ -14,7 +16,7 @@ class LoginScreen(QWidget):
         main_layout.setContentsMargins(0, 0, 0, 0)
         
         self.left_image_label = ImageLabel(self)
-        pixmap_left = QPixmap("assets/bancoFondo.png").scaled(
+        pixmap_left = QPixmap(utils.resource_path("assets/bancoFondo.png")).scaled(
             600, 600, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation
         )
         self.left_image_label.setPixmap(pixmap_left)
