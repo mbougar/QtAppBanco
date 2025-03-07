@@ -4,6 +4,7 @@ from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QSpacerItem, QSizePolicy
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, TitleLabel, PrimaryPushButton, HyperlinkButton, LineEdit, ImageLabel, MessageBox, MessageDialog
 from auth import PyrebaseAuth
+from local_db_con import LocalDbConn
 
 class LoginScreen(QWidget):
     def __init__(self, main_window):
@@ -62,16 +63,19 @@ class LoginScreen(QWidget):
         ## Controlar que el usuario y la contraseña sean correctos con auth.sign_in_with_email_and_password
         ## Pillar la informacion desde local si es que inicia sesion
 
-        Auth = PyrebaseAuth()
+
+        pyrebaseAuth = PyrebaseAuth()
+        #localDbConn = LocalDbConn()
 
         try:
-            Auth.login(username, password)
+            pyrebaseAuth.login(username, password)
+            LocalDbConn.cargarUserInfo(username)
             self.main_window.open_banking_app(username)
         except Exception as e:
             message = MessageDialog(
                 "Error",
-                #str(e),
-                "Usuario o contraseña incorrectos",
+                str(e),
+                #"Usuario o contraseña incorrectos",
                 self
             )
             message.exec()

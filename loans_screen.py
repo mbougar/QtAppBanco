@@ -82,6 +82,8 @@ class LoansScreen(QWidget):
 
 
 
+
+
         loans += loans
         for i, loanInfo in enumerate(loans):
             for j in range(5):

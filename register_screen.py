@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QSiz
 from qfluentwidgets import TitleLabel, PrimaryPushButton, HyperlinkButton, LineEdit, ImageLabel, MessageDialog
 from auth import PyrebaseAuth
 from local_db_con import LocalDbConn
+from model.user_model import User
 
 class RegisterScreen(QWidget):
     def __init__(self, main_window):
@@ -98,20 +99,34 @@ class RegisterScreen(QWidget):
             message.exec()
             return
 
+
+        #Comporbar si el dni ya esta en la bd
+        if LocalDbConn.comprobarDni(self.dni_input.text()):
+            message = MessageDialog("Error", "El DNI ya está registrado", self)
+            message.exec()
+            return
+
+        #Comprobar si el email ya esta en la bd
+        if LocalDbConn.comprobarEmail(self.email_input.text()):
+            message = MessageDialog("Error", "El email ya está registrado", self)
+            message.exec()
+            return
+
         ## Aqui metes al usuario en la base de datos
         #self.main_window.users[username] = password 
 
-        Auth = PyrebaseAuth()
-
+        pyrebaseAuth = PyrebaseAuth()
+        userToInsert = User(self.dni_input.text(), self.name_input.text(), self.surname_input.text(), self.email_input.text(), self.phone_input.text())
+        
         try:
-            Auth.register(username, password)
+            pyrebaseAuth.register(username, password)
+            LocalDbConn.insertUser(userToInsert)
+            LocalDbConn.cargarUserInfo(userToInsert.email)
         except Exception as e:
             message = MessageDialog("Error", f"${e}", self)
             message.exec()
             return
         
-        Localdb = LocalDbConn()
-        Localdb.insert_user(self.dni_input.text(), self.name_input.text(), self.surname_input.text(), self.email_input.text(), self.phone_input.text(), username, password)
         #Base de datos local
 
         message = MessageDialog("Éxito", "Usuario registrado con éxito", self)

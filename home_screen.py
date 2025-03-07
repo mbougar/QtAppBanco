@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QTableWi
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, FluentIcon as FIF, setTheme, Theme
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QDateEdit, QHeaderView
 from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongBodyLabel, TitleLabel
+from local_db_con import LocalDbConn
+from datetime import datetime
 
 class HomeScreen(QWidget):
     def __init__(self, username, parent=None):
@@ -39,18 +41,28 @@ class HomeScreen(QWidget):
 
         ## obtener las ultimas cuentas del usuario
 
-        accounts = [
-            {"balance": "10,500€", "type": "Ahorros", "number": "1234 5678 9012 3456"},
-            {"balance": "3,200€", "type": "Corriente", "number": "9876 5432 1098 7654"},
-            {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
-            {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
-            {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
-        ]
+        accounts = LocalDbConn.obtenerUltimasTresCuentasDeUsuario()
+
+        #accounts = [
+        #    {"balance": "10,500€", "type": "Ahorros", "number": "1234 5678 9012 3456"},
+        #    {"balance": "3,200€", "type": "Corriente", "number": "9876 5432 1098 7654"},
+        #    {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
+        #]
 
         ## Pon la llamada a las cuentas aqui, y crea una tarjeta por cada cuenta
 
         for account in accounts:
-            card = self.create_account_card(account["balance"], account["type"], account["number"])
+
+            num = LocalDbConn.obtenerTarjetaDeCuenta(account[0])
+        
+            if num == None:
+                toShow = "No tiene tarjeta asociada"
+            elif num == []:
+                toShow = "No tiene tarjeta asociada"
+            else:
+                toShow = num[0]
+
+            card = self.create_account_card(str(account[3]) + "€", account[2], toShow )
             accounts_layout.addWidget(card)
 
         layout.addWidget(self.accountsFrame)
@@ -85,16 +97,29 @@ class HomeScreen(QWidget):
 
         # get ultimas 4 suscripciones from database
 
-        transactions = [
-            ["12/3/2025", "1234.00€", "Compra Online"],
-            ["12/3/2025", "11234.00€", "Compra Online"],
-            ["10/3/2025", "123.00€", "Compra Online"],
-            ["10/3/2025", "94.00€", "Compra Online"]
-        ]
-        transactions += transactions
-        for i, songInfo in enumerate(transactions):
-            for j in range(3):
-                self.transactionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
+        
+        #transactions = [
+        #    ["12/3/2025", "1234.00€", "Compra Online"],
+        #    ["12/3/2025", "11234.00€", "Compra Online"],
+        #    ["10/3/2025", "123.00€", "Compra Online"],
+        #    ["10/3/2025", "94.00€", "Compra Online"]
+        #]
+    
+        #transactions += transactions
+        #for i, songInfo in enumerate(transactions):
+        #    for j in range(3):
+        #        self.transactionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
+        transactions = LocalDbConn.obtenerUltimasCuatroTransaccionesDeUsuario()
+
+        for i, transaction in enumerate(transactions):
+            fecha = transaction[5]
+            cantidad = transaction[2]
+            descripcion = transaction[4]
+          
+            # Asigna los valores a las celdas correspondientes
+            self.transactionTableView.setItem(i, 0, QTableWidgetItem(str(fecha)))
+            self.transactionTableView.setItem(i, 1, QTableWidgetItem(str(cantidad)))
+            self.transactionTableView.setItem(i, 2, QTableWidgetItem(str(descripcion)))
 
         self.transactionTableView.verticalHeader().hide()
         self.transactionTableView.resizeColumnsToContents()
@@ -112,19 +137,29 @@ class HomeScreen(QWidget):
         self.subscriptionTableView.setRowCount(4)
         self.subscriptionTableView.setColumnCount(2)
 
-        # get ultimas 4 transactions from database
+        # get ultimas 4 suscripciones from database
 
 
-        transactions = [
-            ["Netflix", "12.00€"],
-            ["Amazon Prime", "11.99€"],
-            ["CarsFacts", "3.00€"],
-            ["Uber", "8.00€"]
-        ]
-        transactions += transactions
-        for i, songInfo in enumerate(transactions):
-            for j in range(2):
-                self.subscriptionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
+        #suscriptions = [
+        #    ["Netflix", "12.00€"],
+        #    ["Amazon Prime", "11.99€"],
+        #    ["CarsFacts", "3.00€"],
+        #    ["Uber", "8.00€"]
+        #]
+        #for i, songInfo in enumerate(suscriptions):
+        #    for j in range(2):
+        #        self.subscriptionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
+
+        suscriptions = LocalDbConn.obtenerUltimasCuatroSuscripcionesDeUsuario()
+
+        for i, suscription in enumerate(suscriptions):
+            servicio = suscription[3]
+            coste = suscription[2]
+          
+            # Asigna los valores a las celdas correspondientes
+            self.subscriptionTableView.setItem(i, 0, QTableWidgetItem(str(servicio)))
+            self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste)))
+
 
         self.subscriptionTableView.verticalHeader().hide()
         self.subscriptionTableView.resizeColumnsToContents()

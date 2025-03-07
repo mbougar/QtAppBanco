@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QTableWi
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, FluentIcon as FIF, setTheme, Theme
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QDateEdit, QHeaderView
 from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongBodyLabel, TitleLabel, PixmapLabel, LineEdit, PrimaryPushButton, MessageBox
+from local_db_con import LocalDbConn
+from datetime import datetime
 
 class SubscriptionsScreen(QWidget):
     def __init__(self, parent=None):
@@ -56,16 +58,26 @@ class SubscriptionsScreen(QWidget):
 
         # get subscriptions from database
 
-        transactions = [
-            ["Netflix", "12.00€"],
-            ["Amazon Prime", "11.99€"],
-            ["CarsFacts", "3.00€"],
-            ["Uber", "8.00€"]
-        ]
-        transactions += transactions
-        for i, songInfo in enumerate(transactions):
-            for j in range(2):
-                self.subscriptionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
+        #transactions = [
+        #    ["Netflix", "12.00€"],
+        #    ["Amazon Prime", "11.99€"],
+        #    ["CarsFacts", "3.00€"],
+        #    ["Uber", "8.00€"]
+        #]
+        #transactions += transactions
+        #for i, songInfo in enumerate(transactions):
+        #    for j in range(2):
+        #        self.subscriptionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
+
+        suscriptions = LocalDbConn.obtenerTodasSuscripcionesDeUsuario()
+
+        for i, suscription in enumerate(suscriptions):
+            servicio = suscription[3]
+            coste = suscription[2]
+          
+            # Asigna los valores a las celdas correspondientes
+            self.subscriptionTableView.setItem(i, 0, QTableWidgetItem(str(servicio)))
+            self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste)))
 
         self.subscriptionTableView.verticalHeader().hide()
         self.subscriptionTableView.resizeColumnsToContents()

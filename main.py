@@ -17,6 +17,7 @@ class MainWindow(QWidget):
         self.setContentsMargins
 
         #self.users = {"admin": "1234"}  # Sacamos de la base de datos
+        # El caso para registrarse es Admin@mail.com y 123456 como passwd
 
         self.stacked_widget = QStackedWidget(self)
 

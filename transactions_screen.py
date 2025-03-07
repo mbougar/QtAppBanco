@@ -5,6 +5,9 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QTableWi
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, FluentIcon as FIF, setTheme, Theme
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QDateEdit, QHeaderView
 from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongBodyLabel, TitleLabel, PixmapLabel, CalendarPicker, PrimaryPushButton, PushButton, MessageBox
+from local_db_con import LocalDbConn
+from datetime import datetime
+
 
 class TransactionsScreen(QWidget):
     def __init__(self, parent=None):
@@ -55,11 +58,10 @@ class TransactionsScreen(QWidget):
         self.transactionTableView.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
 
         self.transactionTableView.setWordWrap(False)
-        self.transactionTableView.setRowCount(4)
         self.transactionTableView.setColumnCount(3)
 
         # get transactions from database
-
+        """
         transactions = [
             ["12/2/2025", "1234.00€", "Compra Online"],
             ["12/2/2025", "11234.00€", "Compra Online"],
@@ -70,6 +72,23 @@ class TransactionsScreen(QWidget):
         for i, transactioninfo in enumerate(transactions):
             for j in range(3):
                 self.transactionTableView.setItem(i, j, QTableWidgetItem(transactioninfo[j]))
+        """
+
+        transactions = LocalDbConn.obtenerTodastransaccionesDeUsuario()
+
+        self.transactionTableView.setRowCount(len(transactions))
+
+        print (transactions)
+
+        for i, transaction in enumerate(transactions):
+            fecha = transaction[5]
+            cantidad = transaction[2]
+            descripcion = transaction[4]
+
+            # Asigna los valores a las celdas correspondientes
+            self.transactionTableView.setItem(i, 0, QTableWidgetItem(fecha))
+            self.transactionTableView.setItem(i, 1, QTableWidgetItem(str(cantidad)))
+            self.transactionTableView.setItem(i, 2, QTableWidgetItem(descripcion))
 
         self.transactionTableView.verticalHeader().hide()
         self.transactionTableView.resizeColumnsToContents()
@@ -79,7 +98,7 @@ class TransactionsScreen(QWidget):
         transaction_layout.addWidget(self.transactionTableView)
         layout.addWidget(self.transactionsFrame)
         self.filter_button.clicked.connect(self.filter_transactions)
-        self.filter_transactions()
+        #self.filter_transactions()
 
         self.mainFrame.setStyleSheet("""
             #mainFrame {
