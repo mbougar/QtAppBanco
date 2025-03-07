@@ -16,7 +16,7 @@ class MainWindow(QWidget):
         self.setFixedSize(1000, 600)
         self.setContentsMargins
 
-        self.users = {"admin": "1234"}  # Sacamos de la base de datos
+        #self.users = {"admin": "1234"}  # Sacamos de la base de datos
 
         self.stacked_widget = QStackedWidget(self)
 

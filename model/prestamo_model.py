@@ -1,3 +1,5 @@
+import uuid
+
 class Prestamo:
     id: str
     usuario_id: str
@@ -7,8 +9,8 @@ class Prestamo:
     estado: str
     fecha_solicitud: str
 
-    def __init__(self, id: str, usuario_id: str, monto: float, tasa_interes: float, plazo_meses: int, estado: str, fecha_solicitud: str):
-        self.id = id
+    def __init__(self, usuario_id: str, monto: float, tasa_interes: float, plazo_meses: int, estado: str, fecha_solicitud: str):
+        self.id = uuid.uuid4()
         self.usuario_id = usuario_id
         self.monto = monto
         self.tasa_interes = tasa_interes

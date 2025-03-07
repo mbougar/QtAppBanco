@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt, QEvent
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QSpacerItem, QSizePolicy
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, TitleLabel, PrimaryPushButton, HyperlinkButton, LineEdit, ImageLabel, MessageBox, MessageDialog
-
+from auth import PyrebaseAuth
 
 class LoginScreen(QWidget):
     def __init__(self, main_window):
@@ -62,6 +62,21 @@ class LoginScreen(QWidget):
         ## Controlar que el usuario y la contraseña sean correctos con auth.sign_in_with_email_and_password
         ## Pillar la informacion desde local si es que inicia sesion
 
+        Auth = PyrebaseAuth()
+
+        try:
+            Auth.login(username, password)
+            self.main_window.open_banking_app(username)
+        except Exception as e:
+            message = MessageDialog(
+                "Error",
+                #str(e),
+                "Usuario o contraseña incorrectos",
+                self
+            )
+            message.exec()
+    
+        """
         if username in self.main_window.users and self.main_window.users[username] == password:
             self.main_window.open_banking_app(username)
         else:
@@ -72,6 +87,7 @@ class LoginScreen(QWidget):
                 self
             )
             message.exec()
+        """
 
     def go_to_register(self):
         self.main_window.stacked_widget.setCurrentIndex(1)

@@ -2,8 +2,6 @@ import pyrebase
 import requests
 import json
 
-
-
 class PyrebaseAuth:
     _instance = None
 

@@ -3,7 +3,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy
 from qfluentwidgets import TitleLabel, PrimaryPushButton, HyperlinkButton, LineEdit, ImageLabel, MessageDialog
-
+from auth import PyrebaseAuth
+from local_db_con import LocalDbConn
 
 class RegisterScreen(QWidget):
     def __init__(self, main_window):
@@ -81,14 +82,16 @@ class RegisterScreen(QWidget):
         self.back_button.clicked.connect(self.go_back)
 
     def register(self):
-        username = self.user_input.text()
+        username = self.email_input.text()
         password = self.password_input.text()
         confirm_password = self.confirm_password_input.text()
 
+        """
         if username in self.main_window.users:
             message = MessageDialog("Error", "El usuario ya existe", self)
             message.exec()
             return
+        """
 
         if password != confirm_password:
             message = MessageDialog("Error", "Las contraseñas no coinciden", self)
@@ -96,7 +99,20 @@ class RegisterScreen(QWidget):
             return
 
         ## Aqui metes al usuario en la base de datos
-        self.main_window.users[username] = password 
+        #self.main_window.users[username] = password 
+
+        Auth = PyrebaseAuth()
+
+        try:
+            Auth.register(username, password)
+        except Exception as e:
+            message = MessageDialog("Error", f"${e}", self)
+            message.exec()
+            return
+        
+        Localdb = LocalDbConn()
+        Localdb.insert_user(self.dni_input.text(), self.name_input.text(), self.surname_input.text(), self.email_input.text(), self.phone_input.text(), username, password)
+        #Base de datos local
 
         message = MessageDialog("Éxito", "Usuario registrado con éxito", self)
         message.exec()

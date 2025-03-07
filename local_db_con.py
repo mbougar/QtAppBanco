@@ -164,6 +164,22 @@ class LocalDbConn:
             conn.rollback()
             conn.close()
 
+    ## TARJETAS
+
+    def obtenerTarjetaDeCuenta(cuenta_id): # puede devolver una tarjeta o None
+        conn = LocalDbConn.conn()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT * FROM cards WHERE account_id = ?", (cuenta_id,))
+            card = cursor.fetchone()
+            conn.commit()
+            conn.close()
+            return card
+        except:
+            print("Algo salió mal al buscar la tarjeta")
+            conn.rollback()
+            conn.close()
+
     ## TRANSACCIONES
 
     def obtenerUltimasCuatroTransaccionesDeUsuario(): # puede devolver una lista de transacciones o None
@@ -298,3 +314,5 @@ class LocalDbConn:
             print("Algo salió mal al borrar el prestamo")
             conn.rollback()
         conn.close()
+
+
