@@ -7,6 +7,8 @@ from auth import PyrebaseAuth
 from local_db_con import LocalDbConn
 from model.user_model import User
 
+import utils
+
 class RegisterScreen(QWidget):
     def __init__(self, main_window):
         super().__init__()
@@ -16,7 +18,7 @@ class RegisterScreen(QWidget):
         main_layout.setContentsMargins(0, 0, 0, 0)
 
         self.left_image_label = ImageLabel(self)
-        pixmap_left = QPixmap("assets/bancoFondo.png").scaled(
+        pixmap_left = QPixmap(utils.resource_path("assets/bancoFondo.png")).scaled(
             600, 600, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation
         )
         self.left_image_label.setPixmap(pixmap_left)

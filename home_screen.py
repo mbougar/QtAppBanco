@@ -8,6 +8,8 @@ from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongB
 from local_db_con import LocalDbConn
 from datetime import datetime
 
+import utils
+
 class HomeScreen(QWidget):
     def __init__(self, username, parent=None):
         super().__init__(parent)
