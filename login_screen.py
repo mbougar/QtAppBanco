@@ -32,7 +32,7 @@ class LoginScreen(QWidget):
         self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.user_input = LineEdit()
-        self.user_input.setPlaceholderText("Usuario")
+        self.user_input.setPlaceholderText("Email")
         self.password_input = LineEdit()
         self.password_input.setPlaceholderText("Contraseña")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
