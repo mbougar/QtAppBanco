@@ -14,7 +14,6 @@ class LocalDbConn:
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(LocalDbConn, cls).__new__(cls)
-            LocalDbConn.__init__(LocalDbConn)
         return cls._instance
     
     
@@ -94,6 +93,7 @@ class LocalDbConn:
             conn.rollback()
         cursor.close()
 
+    #funcion para obtener una conexion a la base de datos
     def conn():
         with sqlite3.connect("local_db.db") as conn:
             return conn
@@ -355,19 +355,4 @@ class LocalDbConn:
             print("Algo salió mal al borrar el prestamo")
             conn.rollback()
         conn.close()
-
-
-#if __name__ == "__main__":
-#    LocalDbConn.cargarUserInfo("Admin@mail.com")
-#    print(LocalDbConn.obtenerTodosLosPrestamosDeUsuario())
-#    if tal == None:
-#        print("No tiene tarjeta asociada")
-#    conn = LocalDbConn.conn()
-#    cursor = conn.cursor()
-#    cursor.execute("SELECT * FROM transactions")
-#    print(cursor.fetchall())
-#    cursor.execute("""
-#        INSERT INTO accounts (iban, usuario_id, tipo, saldo, moneda, fecha_creacion)
-#        VALUES (?, ?, ?, ?, ?, ?)
-#    """, ("ES1234567890123456789012", "12345678M", "Cuenta Corriente", 1500.75, "EUR", datetime.now()))
 

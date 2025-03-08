@@ -51,19 +51,8 @@ class LoansScreen(QWidget):
         self.loanTableView.setColumnHidden(1, True)
         
         
-
         self.populate_loans()
 
-        """
-        for j in range(5):
-            item = QTableWidgetItem(loanInfo[j])
-            if j == 4:  # Columna "Estado"
-                if loanInfo[j] == "Pendiente":
-                    item.setBackground(QColor(255, 200, 200))  # Rojo suave
-                elif loanInfo[j] == "Pagado":
-                    item.setBackground(QColor(200, 255, 200))  # Verde suave
-            self.loanTableView.setItem(i, j, item)
-        """
         self.loanTableView.verticalHeader().hide()
         self.loanTableView.resizeColumnsToContents()
         self.loanTableView.setHorizontalHeaderLabels(["Monto Restante", "id", "Interes", "Plazo"])
@@ -119,7 +108,7 @@ class LoansScreen(QWidget):
         self.add_loan_button.clicked.connect(self.add_loan)
         self.pay_loan_button.clicked.connect(self.pay_loan)
 
-    
+    # Metodo para actualizar la tabla visual de prestamos
     def populate_loans(self):
         
         loans = LocalDbConn.obtenerTodosLosPrestamosDeUsuario()
@@ -181,6 +170,8 @@ class LoansScreen(QWidget):
                 ## Aqui tomas los datos y actualizas el prestamo, la id del prestamo sera loan_data[1]
                 original_loan = float(loan_data[0].replace("€","")) 
                 loan_to_pay = float(message.getPayAmount())
+
+                #Comprueba el monto a pagar, dependiendo del resultado actualiza o elimina el prestamo
                 if (original_loan > loan_to_pay):
                     new_loan = original_loan - loan_to_pay
                     LocalDbConn.pagarPrestamo(new_loan, loan_data[1])

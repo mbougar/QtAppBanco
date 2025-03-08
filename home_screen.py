@@ -42,14 +42,7 @@ class HomeScreen(QWidget):
 
         accounts = LocalDbConn.obtenerUltimasTresCuentasDeUsuario()
 
-        #accounts = [
-        #    {"balance": "10,500€", "type": "Ahorros", "number": "1234 5678 9012 3456"},
-        #    {"balance": "3,200€", "type": "Corriente", "number": "9876 5432 1098 7654"},
-        #    {"balance": "22,850€", "type": "Inversión", "number": "4567 8901 2345 6789"},
-        #]
-
-        ## Pon la llamada a las cuentas aqui, y crea una tarjeta por cada cuenta
-
+        ## Crea las tarjetitas arriba si tienes alguna cuenta
         for account in accounts:
 
             num = LocalDbConn.obtenerTarjetaDeCuenta(account[0])
@@ -94,24 +87,12 @@ class HomeScreen(QWidget):
         self.transactionTableView.setRowCount(4)
         self.transactionTableView.setColumnCount(3)
 
-        # get ultimas 4 suscripciones from database
+        # obtiene las ultimas 4 suscripciones de la bd
 
-        
-        #transactions = [
-        #    ["12/3/2025", "1234.00€", "Compra Online"],
-        #    ["12/3/2025", "11234.00€", "Compra Online"],
-        #    ["10/3/2025", "123.00€", "Compra Online"],
-        #    ["10/3/2025", "94.00€", "Compra Online"]
-        #]
-    
-        #transactions += transactions
-        #for i, songInfo in enumerate(transactions):
-        #    for j in range(3):
-        #        self.transactionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
         transactions = LocalDbConn.obtenerUltimasCuatroTransaccionesDeUsuario()
 
         for i, transaction in enumerate(transactions):
-            fecha = transaction[5]
+            fecha = transaction[5].split(" ")[0]
             cantidad = transaction[2]
             descripcion = transaction[4]
           
@@ -136,18 +117,7 @@ class HomeScreen(QWidget):
         self.subscriptionTableView.setRowCount(4)
         self.subscriptionTableView.setColumnCount(2)
 
-        # get ultimas 4 suscripciones from database
-
-
-        #suscriptions = [
-        #    ["Netflix", "12.00€"],
-        #    ["Amazon Prime", "11.99€"],
-        #    ["CarsFacts", "3.00€"],
-        #    ["Uber", "8.00€"]
-        #]
-        #for i, songInfo in enumerate(suscriptions):
-        #    for j in range(2):
-        #        self.subscriptionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
+        # obtiene las ultimas 4 suscripciones de la bd
 
         suscriptions = LocalDbConn.obtenerUltimasCuatroSuscripcionesDeUsuario()
 

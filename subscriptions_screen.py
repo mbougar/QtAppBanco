@@ -53,29 +53,20 @@ class SubscriptionsScreen(QWidget):
         self.subscriptionTableView.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
 
         self.subscriptionTableView.setWordWrap(False)
-        self.subscriptionTableView.setRowCount(4)
         self.subscriptionTableView.setColumnCount(2)
 
-        # get subscriptions from database
-
-        #transactions = [
-        #    ["Netflix", "12.00€"],
-        #    ["Amazon Prime", "11.99€"],
-        #    ["CarsFacts", "3.00€"],
-        #    ["Uber", "8.00€"]
-        #]
-        #transactions += transactions
-        #for i, songInfo in enumerate(transactions):
-        #    for j in range(2):
-        #        self.subscriptionTableView.setItem(i, j, QTableWidgetItem(songInfo[j]))
-
+        # obtener suscripciones de la bd
         suscriptions = LocalDbConn.obtenerTodasSuscripcionesDeUsuario()
 
+        # ajusta las filas para que sean el numero de la lista
+        self.subscriptionTableView.setRowCount(len(suscriptions))
+
+        # Bucle para poblar la tabla con las suscripciones
         for i, suscription in enumerate(suscriptions):
             servicio = suscription[3]
             coste = suscription[2]
           
-            # Asigna los valores a las celdas correspondientes
+            # Añade los datos a la tabla
             self.subscriptionTableView.setItem(i, 0, QTableWidgetItem(str(servicio)))
             self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste)))
 
@@ -126,7 +117,7 @@ class SubscriptionsScreen(QWidget):
 
     def filter_subscriptions(self):
 
-        # get suscr con el filtro 
+        # obtiene suscripciones con el filtro 
 
         filter = self.filter_line.text()
 

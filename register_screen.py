@@ -95,9 +95,16 @@ class RegisterScreen(QWidget):
             message.exec()
             return
         """
-
+        
+        #Comprobar que las contraseñas sean iguales
         if password != confirm_password:
             message = MessageDialog("Error", "Las contraseñas no coinciden", self)
+            message.exec()
+            return
+
+        #Comprobar que la contraseña tenga al menos 6 caracteres
+        if len(password) < 6:
+            message = MessageDialog("Error", "La contraseña debe tener al menos 6 caracteres", self)
             message.exec()
             return
 
@@ -113,8 +120,8 @@ class RegisterScreen(QWidget):
             message.exec()
             return
 
-        ## Aqui metes al usuario en la base de datos
-        #self.main_window.users[username] = password 
+ 
+        #Meter al usuario en pyrebase y local 
 
         pyrebaseAuth = PyrebaseAuth()
         userToInsert = User(self.dni_input.text(), self.name_input.text(), self.surname_input.text(), self.email_input.text(), self.phone_input.text())
@@ -124,12 +131,11 @@ class RegisterScreen(QWidget):
             LocalDbConn.insertUser(userToInsert)
             LocalDbConn.cargarUserInfo(userToInsert.email)
         except Exception as e:
-            message = MessageDialog("Error", f"${e}", self)
+            #El resto de excepciones que puede llegar a dar pyrebase ya estan controladas arriba, asi que solo puede llegar a dar error de que el email ya esta registrado
+            message = MessageDialog("Error", "El email ya ha sido registrado", self)
             message.exec()
             return
         
-        #Base de datos local
-
         message = MessageDialog("Éxito", "Usuario registrado con éxito", self)
         message.exec()
         self.go_back()

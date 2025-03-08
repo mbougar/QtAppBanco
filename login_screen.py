@@ -61,10 +61,7 @@ class LoginScreen(QWidget):
         username = self.user_input.text()
         password = self.password_input.text()
 
-
-        ## Controlar que el usuario y la contraseña sean correctos con auth.sign_in_with_email_and_password
-        ## Pillar la informacion desde local si es que inicia sesion
-
+        #comprueba el login con el pyrebase, y si es correcto carga la info del usuario en la base de datos local
 
         pyrebaseAuth = PyrebaseAuth()
         #localDbConn = LocalDbConn()
@@ -81,19 +78,6 @@ class LoginScreen(QWidget):
                 self
             )
             message.exec()
-    
-        """
-        if username in self.main_window.users and self.main_window.users[username] == password:
-            self.main_window.open_banking_app(username)
-        else:
-            
-            message = MessageDialog(
-                "Error",
-                "Usuario o contraseña incorrectos",
-                self
-            )
-            message.exec()
-        """
 
     def go_to_register(self):
         self.main_window.stacked_widget.setCurrentIndex(1)

@@ -60,26 +60,15 @@ class TransactionsScreen(QWidget):
         self.transactionTableView.setWordWrap(False)
         self.transactionTableView.setColumnCount(3)
 
-        # get transactions from database
-        """
-        transactions = [
-            ["12/2/2025", "1234.00€", "Compra Online"],
-            ["12/2/2025", "11234.00€", "Compra Online"],
-            ["10/2/2025", "123.00€", "Compra Online"],
-            ["10/2/2025", "94.00€", "Compra Online"]
-        ]
-        transactions += transactions
-        for i, transactioninfo in enumerate(transactions):
-            for j in range(3):
-                self.transactionTableView.setItem(i, j, QTableWidgetItem(transactioninfo[j]))
-        """
-
+        # Obtener transacciones de la base de datos
         transactions = LocalDbConn.obtenerTodastransaccionesDeUsuario()
 
+        # Ajusta las filas para que sean el numero de la lista
         self.transactionTableView.setRowCount(len(transactions))
 
+        # Bucle para poblar la tabla con las transacciones
         for i, transaction in enumerate(transactions):
-            fecha = transaction[5]
+            fecha = transaction[5].split(" ")[0]
             cantidad = transaction[2]
             descripcion = transaction[4]
 
