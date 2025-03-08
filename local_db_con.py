@@ -357,9 +357,9 @@ class LocalDbConn:
         conn.close()
 
 
-if __name__ == "__main__":
-    LocalDbConn.cargarUserInfo("Admin@mail.com")
-    print(LocalDbConn.obtenerTodastransaccionesDeUsuario())
+#if __name__ == "__main__":
+#    LocalDbConn.cargarUserInfo("Admin@mail.com")
+#    print(LocalDbConn.obtenerTodosLosPrestamosDeUsuario())
 #    if tal == None:
 #        print("No tiene tarjeta asociada")
 #    conn = LocalDbConn.conn()

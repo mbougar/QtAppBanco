@@ -76,8 +76,8 @@ class LoginScreen(QWidget):
         except Exception as e:
             message = MessageDialog(
                 "Error",
-                str(e),
-                #"Usuario o contraseña incorrectos",
+                #str(e),
+                "Usuario o contraseña incorrectos",
                 self
             )
             message.exec()

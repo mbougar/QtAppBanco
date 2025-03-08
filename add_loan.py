@@ -5,7 +5,9 @@ from PyQt6.QtGui import QIcon, QColor
 from PyQt6.QtWidgets import QApplication, QWidget, QHBoxLayout
 
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, LineEdit, PushButton, CaptionLabel, setTheme, Theme
-
+from local_db_con import LocalDbConn
+from model.prestamo_model import Prestamo
+from datetime import datetime
 
 class AddLoanMessageBox(MessageBoxBase):
 
@@ -74,7 +76,7 @@ class AddLoanMessageBox(MessageBoxBase):
                 isValidInterest = False
                 self.warningLabelInterest.setText("El interés debe ser mayor a 0")
                 self.warningLabelInterest.setHidden(isValidInterest)
-            
+
             if length <= 0:  # Loan term must be greater than 0
                 isValidLength = False
                 self.warningLabelLength.setText("El plazo debe ser mayor a 0")

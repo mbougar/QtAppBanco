@@ -78,8 +78,6 @@ class TransactionsScreen(QWidget):
 
         self.transactionTableView.setRowCount(len(transactions))
 
-        print (transactions)
-
         for i, transaction in enumerate(transactions):
             fecha = transaction[5]
             cantidad = transaction[2]

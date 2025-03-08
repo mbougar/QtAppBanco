@@ -23,15 +23,12 @@ class HomeScreen(QWidget):
 
         layout = QVBoxLayout(self.mainFrame)
 
+
         ##Header Frame
         self.headerFrame = QFrame(self.mainFrame)
         self.headerFrame.setObjectName("headerFrame")
-        self.welcome_label = TitleLabel(f"Hola {username}, ¡Bienvenido de nuevo!")
         header_layout = QHBoxLayout(self.headerFrame)
-        layout.addWidget(self.headerFrame)
-
-        self.welcome_label = TitleLabel(f"Hola {username}, ¡Bienvenido de nuevo!")
-        header_layout.addWidget(self.welcome_label)
+        header_layout.addWidget(TitleLabel(f"Hola {LocalDbConn.actualUser.nombre}, ¡Bienvenido de nuevo!"))
         layout.addWidget(self.headerFrame)
 
         # Cuentas (Maximo 3)

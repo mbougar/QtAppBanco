@@ -101,7 +101,6 @@ class RegisterScreen(QWidget):
             message.exec()
             return
 
-
         #Comporbar si el dni ya esta en la bd
         if LocalDbConn.comprobarDni(self.dni_input.text()):
             message = MessageDialog("Error", "El DNI ya está registrado", self)

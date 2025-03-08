@@ -59,14 +59,11 @@ class PayLoanMessageBox(MessageBoxBase):
         self.progressRing.setValue(int(percentage))  # Convert to int for ProgressRing
 
     def validate(self):
-
         try:
             a = 1
-
         except Exception:
             self.warningLabelGeneral.show()
             return False
-        
         return True
         
     def getPayAmount(self):
