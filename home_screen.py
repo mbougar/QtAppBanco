@@ -98,7 +98,7 @@ class HomeScreen(QWidget):
           
             # Asigna los valores a las celdas correspondientes
             self.transactionTableView.setItem(i, 0, QTableWidgetItem(str(fecha)))
-            self.transactionTableView.setItem(i, 1, QTableWidgetItem(str(cantidad)))
+            self.transactionTableView.setItem(i, 1, QTableWidgetItem(str(cantidad) + "€"))
             self.transactionTableView.setItem(i, 2, QTableWidgetItem(str(descripcion)))
 
         self.transactionTableView.verticalHeader().hide()
@@ -127,7 +127,7 @@ class HomeScreen(QWidget):
           
             # Asigna los valores a las celdas correspondientes
             self.subscriptionTableView.setItem(i, 0, QTableWidgetItem(str(servicio)))
-            self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste)))
+            self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste) + "€"))
 
 
         self.subscriptionTableView.verticalHeader().hide()

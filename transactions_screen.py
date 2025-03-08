@@ -74,7 +74,7 @@ class TransactionsScreen(QWidget):
 
             # Asigna los valores a las celdas correspondientes
             self.transactionTableView.setItem(i, 0, QTableWidgetItem(fecha))
-            self.transactionTableView.setItem(i, 1, QTableWidgetItem(str(cantidad)))
+            self.transactionTableView.setItem(i, 1, QTableWidgetItem(str(cantidad) + "€"))
             self.transactionTableView.setItem(i, 2, QTableWidgetItem(descripcion))
 
         self.transactionTableView.verticalHeader().hide()

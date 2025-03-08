@@ -68,16 +68,18 @@ class SubscriptionsScreen(QWidget):
           
             # Añade los datos a la tabla
             self.subscriptionTableView.setItem(i, 0, QTableWidgetItem(str(servicio)))
-            self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste)))
+            self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste) + "€"))
 
         self.subscriptionTableView.verticalHeader().hide()
         self.subscriptionTableView.resizeColumnsToContents()
-        self.subscriptionTableView.setHorizontalHeaderLabels(["Servicio", "Coste"])
+        self.subscriptionTableView.setHorizontalHeaderLabels(["Servicio", "Coste/mes"])
         self.subscriptionTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)        
 
         subcription_layout.addWidget(self.subscriptionTableView)
         layout.addWidget(self.subscriptionsFrame)
         self.filter_button.clicked.connect(self.filter_subscriptions)
+
+        ##Stylesheet with all the styles for the frames and background
 
         self.mainFrame.setStyleSheet("""
             #mainFrame {
