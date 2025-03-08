@@ -42,7 +42,7 @@ class MainWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    myappid = 'mbougar.myapp.calculator'
+    myappid = 'banco.myapp.costasur'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     app.setWindowIcon(QtGui.QIcon(utils.resource_path("iconoBanco.ico")))
 
