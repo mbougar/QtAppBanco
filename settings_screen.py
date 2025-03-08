@@ -22,7 +22,7 @@ class SettingsScreen(QWidget):
         layout.addWidget(self.title_label)  # Añadimos el título al layout principal
 
         # Botón para cambiar el tema
-        self.theme_button = PrimaryPushButton("🌙 Cambiar tema", self)
+        self.theme_button = PrimaryPushButton("🌙 Cambiar acentos", self)
         self.theme_button.clicked.connect(self.toggle_theme)  # Conectamos la acción de cambio de tema
         self.theme_button.setFixedHeight(40)  # Ajustamos la altura del botón para un aspecto más consistente
         layout.addWidget(self.theme_button, alignment=Qt.AlignmentFlag.AlignCenter)  # Centramos el botón en el layout

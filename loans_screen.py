@@ -116,7 +116,8 @@ class LoansScreen(QWidget):
         self.loanTableView.setRowCount(len(loans))
 
         for i, loanInfo in enumerate(loans):
-            monto = loanInfo[2]
+            monto = float(loanInfo[2])
+            monto = round(monto, 2)
             interes = loanInfo[3]
             plazo = loanInfo[4]
 

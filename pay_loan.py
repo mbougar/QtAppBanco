@@ -14,7 +14,7 @@ class PayLoanMessageBox(MessageBoxBase):
 
         self.payAmount = None 
 
-        self.titleLabel = SubtitleLabel("Pedir Préstamo", self)
+        self.titleLabel = SubtitleLabel("Pagar Préstamo", self)
         self.viewLayout.addWidget(self.titleLabel)
 
         self.widget.setMinimumWidth(350)
