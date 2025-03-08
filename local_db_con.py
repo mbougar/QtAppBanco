@@ -3,6 +3,8 @@ from model.user_model import User
 from model.prestamo_model import Prestamo
 from datetime import datetime,timedelta
 
+import utils
+
 ## En lugar de hacerlo todo aqui, si queremos mejorarlo, podemos dejar la conexion con la base de datos aqui y hacer una clase para cada tabla de la base de datos
 ## y hacer las operaciones de la base de datos en esas clases, simplemente pasando una conexion a la funcion, para que sea mas facil de mantener y de entender
 
@@ -95,7 +97,7 @@ class LocalDbConn:
 
     #funcion para obtener una conexion a la base de datos
     def conn():
-        with sqlite3.connect("local_db.db") as conn:
+        with sqlite3.connect(utils.resource_path("local_db.db")) as conn:
             return conn
     
     ## USER
