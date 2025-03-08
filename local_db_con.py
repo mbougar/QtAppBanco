@@ -355,4 +355,3 @@ class LocalDbConn:
             print("Algo salió mal al borrar el prestamo")
             conn.rollback()
         conn.close()
-
