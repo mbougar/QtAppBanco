@@ -17,55 +17,46 @@ class HomeScreen(QWidget):
 
         main_layout = QVBoxLayout(self)
 
-        # mainFrame
+        # Marco principal
         self.mainFrame = QFrame(self)
         self.mainFrame.setObjectName("mainFrame")
-
         layout = QVBoxLayout(self.mainFrame)
 
-
-        ##Header Frame
+        ## Encabezado
         self.headerFrame = QFrame(self.mainFrame)
         self.headerFrame.setObjectName("headerFrame")
         header_layout = QHBoxLayout(self.headerFrame)
         header_layout.addWidget(TitleLabel(f"Hola {LocalDbConn.actualUser.nombre}, ¡Bienvenido de nuevo!"))
         layout.addWidget(self.headerFrame)
 
-        # Cuentas (Maximo 3)
-
+        # Sección de Cuentas (Máximo 3)
         self.accountsFrame = QFrame(self.mainFrame)
         self.accountsFrame.setObjectName("accountsFrame")
-
         accounts_layout = QHBoxLayout(self.accountsFrame)
 
-        ## obtener las ultimas cuentas del usuario
-
+        ## Obtener las últimas cuentas del usuario
         accounts = LocalDbConn.obtenerUltimasTresCuentasDeUsuario()
 
-        ## Crea las tarjetitas arriba si tienes alguna cuenta
+        ## Crear tarjetas de cuentas si existen
         for account in accounts:
-
             num = LocalDbConn.obtenerTarjetaDeCuenta(account[0])
-        
-            if num == None:
-                toShow = "No tiene tarjeta asociada"
-            elif num == []:
+            
+            if num is None or num == []:
                 toShow = "No tiene tarjeta asociada"
             else:
                 toShow = num[0]
 
-            card = self.create_account_card(str(account[3]) + "€", account[2], toShow )
+            card = self.create_account_card(str(account[3]) + "€", account[2], toShow)
             accounts_layout.addWidget(card)
 
         layout.addWidget(self.accountsFrame)
 
-        ##Body Frame
+        ## Cuerpo principal
         self.bodyFrame = QFrame(self.mainFrame)
         self.bodyFrame.setObjectName("bodyFrame")
-
         body_layout = QVBoxLayout(self.bodyFrame)
 
-        # Tags con nombres de tablas
+        # Etiquetas de tablas
         tags = QHBoxLayout()
         self.transaction_label = StrongBodyLabel("Transacciones")
         self.subscription_label = StrongBodyLabel("Subscripciones")
@@ -73,30 +64,27 @@ class HomeScreen(QWidget):
         tags.addWidget(self.subscription_label)
         body_layout.addLayout(tags)
 
-        # Transactions & Subscriptions
+        # Contenido de transacciones y suscripciones
         content_layout = QHBoxLayout()
 
-        # Transactions
+        # Tabla de Transacciones
         self.transactionTableView = TableWidget(self)
         self.transactionTableView.setBorderVisible(True)
         self.transactionTableView.setBorderRadius(8)
-
         self.transactionTableView.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-
         self.transactionTableView.setWordWrap(False)
         self.transactionTableView.setRowCount(4)
         self.transactionTableView.setColumnCount(3)
 
-        # obtiene las ultimas 4 suscripciones de la bd
-
+        # Obtener las últimas 4 transacciones
         transactions = LocalDbConn.obtenerUltimasCuatroTransaccionesDeUsuario()
 
         for i, transaction in enumerate(transactions):
             fecha = transaction[5].split(" ")[0]
             cantidad = transaction[2]
             descripcion = transaction[4]
-          
-            # Asigna los valores a las celdas correspondientes
+            
+            # Asignar valores a las celdas
             self.transactionTableView.setItem(i, 0, QTableWidgetItem(str(fecha)))
             self.transactionTableView.setItem(i, 1, QTableWidgetItem(str(cantidad) + "€"))
             self.transactionTableView.setItem(i, 2, QTableWidgetItem(str(descripcion)))
@@ -106,29 +94,25 @@ class HomeScreen(QWidget):
         self.transactionTableView.setHorizontalHeaderLabels(["Fecha", "Cantidad", "Desc"])
         self.transactionTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
-        # Subscriptions
+        # Tabla de Suscripciones
         self.subscriptionTableView = TableWidget(self)
         self.subscriptionTableView.setBorderVisible(True)
         self.subscriptionTableView.setBorderRadius(8)
-
         self.subscriptionTableView.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-
         self.subscriptionTableView.setWordWrap(False)
         self.subscriptionTableView.setRowCount(4)
         self.subscriptionTableView.setColumnCount(2)
 
-        # obtiene las ultimas 4 suscripciones de la bd
-
+        # Obtener las últimas 4 suscripciones
         suscriptions = LocalDbConn.obtenerUltimasCuatroSuscripcionesDeUsuario()
 
         for i, suscription in enumerate(suscriptions):
             servicio = suscription[3]
             coste = suscription[2]
-          
-            # Asigna los valores a las celdas correspondientes
+            
+            # Asignar valores a las celdas
             self.subscriptionTableView.setItem(i, 0, QTableWidgetItem(str(servicio)))
             self.subscriptionTableView.setItem(i, 1, QTableWidgetItem(str(coste) + "€"))
-
 
         self.subscriptionTableView.verticalHeader().hide()
         self.subscriptionTableView.resizeColumnsToContents()
@@ -137,11 +121,10 @@ class HomeScreen(QWidget):
 
         content_layout.addWidget(self.transactionTableView)
         content_layout.addWidget(self.subscriptionTableView)
-
         body_layout.addLayout(content_layout)
-
         layout.addWidget(self.bodyFrame)
 
+        # Aplicar estilos a los marcos
         self.mainFrame.setStyleSheet("""
             #mainFrame {
                 background-color: #3a6d91;
@@ -177,6 +160,7 @@ class HomeScreen(QWidget):
         main_layout.addWidget(self.mainFrame)
 
     def create_account_card(self, balance, account_type, number):
+        """ Crea una tarjeta visual para mostrar información de una cuenta bancaria """
         card = QFrame()
         card.setStyleSheet("""
             QFrame {
@@ -192,8 +176,7 @@ class HomeScreen(QWidget):
         card_layout = QVBoxLayout(card)
 
         balance_label = TitleLabel(balance)
-        balance_label.setAlignment(Qt.AlignmentFlag.AlignRight)  # Align balance to the right
-
+        balance_label.setAlignment(Qt.AlignmentFlag.AlignRight)  # Alinear saldo a la derecha
         account_type_label = QLabel(f"Cuenta {account_type}")
         number_label = QLabel(f"{number}")
 
