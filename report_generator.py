@@ -40,7 +40,7 @@ def generate_posicion_global():
         """
     data = fetch_data(query)
     for row in data:
-        pdf.cell(0, 10, f"Usuario: {row[0]} - Cuenta: {row[1]} - Tarjeta: {row[2]} - Saldo: {row[3]}€", 0, 1)
+        pdf.cell(0, 10, f"Usuario: {row[0]} - Nombre de usuario: {row[1]} - Cuenta: {row[2]} - Tarjeta: {row[3]} - Saldo: {row[4]}€", 0, 1)
     pdf.output("posicion_global.pdf")
 
 def generate_ultimos_movimientos():
