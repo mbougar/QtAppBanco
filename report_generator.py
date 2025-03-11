@@ -32,7 +32,12 @@ def generate_posicion_global():
     pdf.title = "Posición Global"
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    query = "SELECT usuario, cuenta, tarjeta, saldo FROM cuentas;"
+    query = """
+        SELECT u.dni, a.iban, c.numero, a.saldo
+        FROM accounts a
+        JOIN users u ON a.usuario_id = u.dni
+        JOIN cards c ON c.account_id = a.iban;
+        """
     data = fetch_data(query)
     for row in data:
         pdf.cell(0, 10, f"Usuario: {row[0]} - Cuenta: {row[1]} - Tarjeta: {row[2]} - Saldo: {row[3]}€", 0, 1)
@@ -43,7 +48,7 @@ def generate_ultimos_movimientos():
     pdf.title = "Últimos Movimientos"
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    query = "SELECT * FROM transacciones ORDER BY fecha DESC LIMIT 4;"
+    query = "SELECT * FROM transactions ORDER BY fecha DESC LIMIT 4;"
     data = fetch_data(query)
     for row in data:
         pdf.cell(0, 10, f"{row[1]} - {row[2]}€ - {row[3]}", 0, 1)
@@ -54,7 +59,7 @@ def generate_prestamos():
     pdf.title = "Préstamos"
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    query = "SELECT * FROM prestamos;"
+    query = "SELECT * FROM loans"
     data = fetch_data(query)
     for row in data:
         pdf.cell(0, 10, f"Usuario: {row[1]} - Monto: {row[2]}€ - Estado: {row[3]}", 0, 1)
@@ -65,7 +70,7 @@ def generate_transacciones():
     pdf.title = "Transacciones"
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    query = "SELECT * FROM transacciones;"
+    query = "SELECT * FROM transactions;"
     data = fetch_data(query)
     for row in data:
         pdf.cell(0, 10, f"{row[1]} - {row[2]}€ - {row[3]}", 0, 1)
@@ -76,7 +81,7 @@ def generate_subscripciones():
     pdf.title = "Subscripciones"
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    query = "SELECT * FROM subscripciones;"
+    query = "SELECT * FROM subscriptions"
     data = fetch_data(query)
     for row in data:
         pdf.cell(0, 10, f"{row[1]} - {row[2]}€ - {row[3]}", 0, 1)
