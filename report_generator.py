@@ -1,92 +1,83 @@
 from fpdf import FPDF
 import sqlite3
 import os
+import local_db_con
+import utils
 
+# Definir rutas
 diractual = os.getcwd()
 path = os.path.join(diractual, "report")
 logo_path = os.path.join(path, "logo.png")
+arial_font_path = utils.resource_path("assets/ARIAL.TTF")  # Ruta a la fuente Arial
 
 class PDFBase(FPDF):
     def header(self):
-        self.image(logo_path, 10, 8, 33)
-        self.set_font("Arial", "B", 15)
+        self.image(utils.resource_path("assets/bancoFondo.png"), 10, 8, 33)
+        self.set_font("ArialUnicode", "", 12)  # Usamos la fuente registrada
         self.cell(80)
         self.cell(30, 10, self.title, 0, 1, "C")
         self.ln(10)
-    
+
     def footer(self):
         self.set_y(-15)
-        self.set_font("Arial", "I", 10)
+        self.set_font("ArialUnicode", "", 10)
         self.cell(0, 10, f"Página {self.page_no()}", 0, 0, "C")
 
+# Función para obtener datos de la base de datos
 def fetch_data(query):
-    conn = sqlite3.connect("banco.db")  # Asegúrate de que la ruta a tu DB es correcta
+    conn = local_db_con.LocalDbConn.conn()
     cursor = conn.cursor()
     cursor.execute(query)
     data = cursor.fetchall()
     conn.close()
     return data
 
-def generate_posicion_global():
+# Función para generar reportes
+def generate_report(filename, title, query, format_row):
     pdf = PDFBase()
-    pdf.title = "Posición Global"
+    pdf.title = title
+    pdf.add_font("ArialUnicode", "", arial_font_path, uni=True)  # Registrar fuente
+    pdf.set_font("ArialUnicode", "", 12)  # Usar la fuente con soporte Unicode
     pdf.add_page()
-    pdf.set_font("Arial", size=12)
+
+    data = fetch_data(query)
+    for row in data:
+        pdf.cell(0, 10, format_row(row), 0, 1)
+
+    pdf.output(filename)
+
+# Reportes específicos
+def generate_posicion_global():
     query = """
         SELECT u.dni, u.nombre, a.iban, c.numero, a.saldo
         FROM accounts a
         JOIN users u ON a.usuario_id = u.dni
         JOIN cards c ON c.account_id = a.iban;
-        """
-    data = fetch_data(query)
-    for row in data:
-        pdf.cell(0, 10, f"Usuario: {row[0]} - Nombre de usuario: {row[1]} - Cuenta: {row[2]} - Tarjeta: {row[3]} - Saldo: {row[4]}€", 0, 1)
-    pdf.output("posicion_global.pdf")
+    """
+    generate_report("posicion_global.pdf", "Posición Global", query, 
+        lambda row: f"Usuario: {row[0]} - Nombre: {row[1]} - Cuenta: {row[2]} - Tarjeta: {row[3]} - Saldo: {row[4]}€")
 
 def generate_ultimos_movimientos():
-    pdf = PDFBase()
-    pdf.title = "Últimos Movimientos"
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
     query = "SELECT * FROM transactions ORDER BY fecha DESC LIMIT 4;"
-    data = fetch_data(query)
-    for row in data:
-        pdf.cell(0, 10, f"{row[1]} - {row[2]}€ - {row[3]}", 0, 1)
-    pdf.output("ultimos_movimientos.pdf")
+    generate_report("ultimos_movimientos.pdf", "Últimos Movimientos", query, 
+        lambda row: f"{row[1]} - {row[2]}€ - {row[3]}")
 
 def generate_prestamos():
-    pdf = PDFBase()
-    pdf.title = "Préstamos"
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
     query = "SELECT * FROM loans"
-    data = fetch_data(query)
-    for row in data:
-        pdf.cell(0, 10, f"Usuario: {row[1]} - Monto: {row[2]}€ - Estado: {row[3]}", 0, 1)
-    pdf.output("prestamos.pdf")
+    generate_report("prestamos.pdf", "Préstamos", query, 
+        lambda row: f"Usuario: {row[1]} - Monto: {row[2]}€ - Estado: {row[3]}")
 
 def generate_transacciones():
-    pdf = PDFBase()
-    pdf.title = "Transacciones"
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
     query = "SELECT * FROM transactions;"
-    data = fetch_data(query)
-    for row in data:
-        pdf.cell(0, 10, f"{row[1]} - {row[2]}€ - {row[3]}", 0, 1)
-    pdf.output("transacciones.pdf")
+    generate_report("transacciones.pdf", "Transacciones", query, 
+        lambda row: f"{row[1]} - {row[2]}€ - {row[3]}")
 
 def generate_subscripciones():
-    pdf = PDFBase()
-    pdf.title = "Subscripciones"
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
     query = "SELECT * FROM subscriptions"
-    data = fetch_data(query)
-    for row in data:
-        pdf.cell(0, 10, f"{row[1]} - {row[2]}€ - {row[3]}", 0, 1)
-    pdf.output("subscripciones.pdf")
+    generate_report("subscripciones.pdf", "Subscripciones", query, 
+        lambda row: f"{row[1]} - {row[2]}€ - {row[3]}")
 
+# Función principal
 def main():
     generate_posicion_global()
     generate_ultimos_movimientos()

@@ -4,11 +4,12 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QPushButton, QHBoxLayout, QLineEdit, QDateEdit, QFrame
 from qfluentwidgets import MSFluentWindow, NavigationItemPosition, FluentIcon as FIF, setTheme, Theme
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QDateEdit, QHeaderView
-from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongBodyLabel, TitleLabel
+from qfluentwidgets import TableWidget, setTheme, Theme, FluentIconBase, StrongBodyLabel, TitleLabel, PrimaryPushButton
 from local_db_con import LocalDbConn
 from datetime import datetime
 
 import utils
+import report_generator
 
 class HomeScreen(QWidget):
     def __init__(self, username, parent=None):
@@ -62,7 +63,13 @@ class HomeScreen(QWidget):
         self.subscription_label = StrongBodyLabel("Subscripciones")
         tags.addWidget(self.transaction_label)
         tags.addWidget(self.subscription_label)
+
+        self.latest_movements_button = PrimaryPushButton("Obtener PDF")
+        tags.addWidget(self.latest_movements_button)
+
         body_layout.addLayout(tags)
+
+        self.latest_movements_button.clicked.connect(self.latest_movements)
 
         # Contenido de transacciones y suscripciones
         content_layout = QHBoxLayout()
@@ -185,3 +192,6 @@ class HomeScreen(QWidget):
         card_layout.addWidget(number_label)
 
         return card
+    
+    def latest_movements(self):
+        report_generator.generate_ultimos_movimientos()
