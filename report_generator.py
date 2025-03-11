@@ -33,7 +33,7 @@ def generate_posicion_global():
     pdf.add_page()
     pdf.set_font("Arial", size=12)
     query = """
-        SELECT u.dni, a.iban, c.numero, a.saldo
+        SELECT u.dni, u.nombre, a.iban, c.numero, a.saldo
         FROM accounts a
         JOIN users u ON a.usuario_id = u.dni
         JOIN cards c ON c.account_id = a.iban;
